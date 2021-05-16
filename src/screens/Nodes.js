@@ -21,6 +21,7 @@ export class Nodes extends React.Component {
   }
 
   toggleNodeExpanded(node) {
+    this.props.actions.getNodeBlocks(node);
     this.setState({
       expandedNodeURL: node.url === this.state.expandedNodeURL ? null : node.url
     });
@@ -28,6 +29,7 @@ export class Nodes extends React.Component {
 
   render() {
     const { nodes } = this.props;
+
     return (
       <View>
         <Heading style={styles.heading} type={4}>

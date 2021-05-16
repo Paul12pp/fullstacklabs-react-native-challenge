@@ -1,10 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { View, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  ActivityIndicator
+} from "react-native";
 import colors from "../constants/colors";
 import { Paper, Subtitle, BodyText, Caption } from "material-bread";
 import { Expander } from "./Expander";
 import Status from "./Status";
+import NodeBlock from "./NodeBlock";
 
 const Node = ({ node, expanded, toggleNodeExpanded }) => (
   <TouchableOpacity onPress={() => toggleNodeExpanded(node)}>
@@ -23,11 +29,15 @@ const Node = ({ node, expanded, toggleNodeExpanded }) => (
         style={styles.secondaryHeading}
       />
       <Expander expanded={expanded} style={styles.icon(expanded)} />
-      {expanded && (
-        <View style={styles.heading}>
-          <BodyText type={1} text={"Blocks go here"} />
-        </View>
+      {expanded && node.blocks?.loading && (
+        <ActivityIndicator style={styles.loading} />
       )}
+      {expanded && node.blocks?.error && (
+        <Subtitle text="Error loading blocks" style={styles.error} />
+      )}
+      {!!expanded &&
+        !!node.blocks?.list.length &&
+        node.blocks?.list.map(item => <NodeBlock block={item} />)}
     </Paper>
   </TouchableOpacity>
 );
@@ -68,7 +78,19 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: expanded ? 10 : 20,
     right: 10
-  })
+  }),
+  loading: {
+    padding: 10,
+    alignSelf: "center",
+    marginTop: 10
+  },
+  error: {
+    color: colors.danger,
+    padding: 10,
+    alignSelf: "center",
+    marginTop: 10,
+    fontWeight: "bold"
+  }
 });
 
 export default Node;

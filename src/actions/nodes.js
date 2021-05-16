@@ -48,3 +48,47 @@ export function checkNodeStatuses(list) {
     });
   };
 }
+
+const getNodeBlocksStart = node => {
+  return {
+    type: types.GET_NODE_BLOCKS_START,
+    node
+  };
+};
+
+const getNodeBlocksSuccess = (node, res) => {
+  return {
+    type: types.GET_NODE_BLOCKS_SUCCESS,
+    node,
+    res
+  };
+};
+
+const getNodeBlocksFailure = node => {
+  return {
+    type: types.GET_NODE_BLOCKS_FAILURE,
+    node
+  };
+};
+
+export function getNodeBlocks(node) {
+  return async dispatch => {
+    try {
+      // console.log(node);
+      dispatch(getNodeBlocksStart(node));
+      // console.log(node);
+      const res = await fetch(`${node.url}/api/v1/blocks`);
+
+      if (res.status >= 400) {
+        dispatch(getNodeBlocksFailure(node));
+      }
+
+      const json = await res.json();
+
+      dispatch(getNodeBlocksSuccess(node, json));
+    } catch (err) {
+      console.log(err);
+      dispatch(getNodeBlocksFailure(node));
+    }
+  };
+}
