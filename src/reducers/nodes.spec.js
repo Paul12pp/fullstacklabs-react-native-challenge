@@ -106,7 +106,7 @@ describe("Reducers::Nodes", () => {
         {
           ...nodeA,
           blocks: {
-            loading: false,
+            loading:  true,
             error: false,
             list: []
           }
@@ -114,7 +114,7 @@ describe("Reducers::Nodes", () => {
         nodeB
       ]
     };
-
+console.log(reducer(appState, action).list[0].blocks)
     expect(reducer(appState, action)).toEqual(expected);
   });
 

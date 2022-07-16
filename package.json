@@ -17,7 +17,7 @@
     "material-bread": "^0.2.6",
     "react": "^16.11.0",
     "react-native": "0.62.0",
-    "react-native-gesture-handler": "^1.6.1",
+    "react-native-gesture-handler": "^2.5.0",
     "react-native-reanimated": "^1.7.1",
     "react-native-safe-area-context": "^0.7.3",
     "react-native-screens": "^2.4.0",
@@ -40,6 +40,15 @@
     "redux-mock-store": "^1.5.4"
   },
   "jest": {
-    "preset": "react-native"
+    "preset": "react-native",
+    "setupFiles": [
+      "./node_modules/react-native-gesture-handler/jestSetup.js"
+    ],
+    "transformIgnorePatterns": [
+      "node_modules/(?!(...|...|...))"
+    ],
+    "globals": {
+      "window": {}
+    }
   }
 }
